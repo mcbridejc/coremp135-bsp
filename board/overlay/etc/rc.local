@@ -1,0 +1,28 @@
+#!/bin/sh
+[ "$1" = "stop" ] && exit 0
+
+# load tun module (for tailscale)
+modprobe tun
+
+# Run modetest
+# This does something to initialize the DRM pipeline -- I have not figured out exactly what. But,
+# writing to /dev/fb1 has no effect until modetest has been run.
+modetest
+
+echo 1 4 1 7 > /proc/sys/kernel/printk
+tinyplay /usr/local/m5stack/HugoInitialized.wav &> /dev/null &
+
+# set otg master
+# echo 130 > /sys/class/gpio/export && echo out > /sys/class/gpio/gpio130/direction && echo 1 > /sys/class/gpio/gpio130/value
+# echo "host" >/sys/class/usb_role/49000000.usb-otg-role-switch/role
+echo "device" >/sys/class/usb_role/49000000.usb-otg-role-switch/role
+
+# set bus 5V out
+# echo 131 > /sys/class/gpio/export && echo out > /sys/class/gpio/gpio131/direction && echo 1 > /sys/class/gpio/gpio131/value
+
+# Setup can0 bus for 250kbit/s
+# ip link set can0 type can bitrate 250000
+# ip link set can0 up
+
+# Mark RAUC good
+rauc status mark-good

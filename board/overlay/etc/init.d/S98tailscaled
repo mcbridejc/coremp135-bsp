@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# Start/stop tailscaled
+#
+
+DAEMON=/usr/sbin/tailscaled
+PIDFILE=/var/run/tailscaled.pid
+
+case "$1" in
+  start)
+	echo "Starting tailscaled..."
+	start-stop-daemon -S -b -x "$DAEMON" -p "$PIDFILE"
+	;;
+  stop)
+	echo "Stopping tailscaled..."
+	start-stop-daemon -K -x "$DAEMON" -p "$PIDFILE" -o
+	;;
+  restart)
+	"$0" stop
+	sleep 1 # Prevent race condition: ensure stops before start.
+	"$0" start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
