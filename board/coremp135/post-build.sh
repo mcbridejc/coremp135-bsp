@@ -41,12 +41,12 @@ fi
 if [ -e ${TARGET_DIR}/etc/fstab ]; then
 	# For configuration data
 	# WARNING: data=journal is safest, but potentially slow!
-	if $(grep -qE '/dev/disk/by-label/Data' ${TARGET_DIR}/etc/fstab); then
+	if $(grep -qE 'LABEL=Data' ${TARGET_DIR}/etc/fstab); then
 		# replace line
-		sed -i "/\/dev\/disk\/by-label\/Data/c\/dev\/disk\/by-label\/Data \/data ${FSTAB_OPTIONS}" output/target/etc/fstab
+		sed -i "LABEL=Data c\LABEL=Data \/data ${FSTAB_OPTIONS}" output/target/etc/fstab
 	else
 		# add line
-		echo "/dev/disk/by-label/Data /data ${FSTAB_OPTIONS}" >> ${TARGET_DIR}/etc/fstab	
+		echo "LABEL=Data /data ${FSTAB_OPTIONS}" >> ${TARGET_DIR}/etc/fstab
 	fi
 fi
 
