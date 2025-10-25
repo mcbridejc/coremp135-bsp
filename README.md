@@ -25,3 +25,18 @@ By default, the BSP creates two rootfs partitions for holding the linux system a
 these are what are updated by an RAUC bundle -- and a data partition for storing data which is not
 replaced during OTA. By default, the data partition is an ext4 filesystem, but it can be configured
 as exFAT by setting the `COREMP135_EXFAT_DATA` environment variable.
+
+### Authorized SSH key
+
+To log in via SSH, you can place a public key into the target directory at
+$TARGET_DIR/root/.ssh/authorized_keys.
+
+For example, in a post-build script:
+
+```bash
+# Copy public key for login
+if [ -e ~/.ssh/id_rsa.pub ]; then
+  mkdir -p $TARGET_DIR/root/.ssh
+  cp ~/.ssh/id_rsa.pub $TARGET_DIR/root/.ssh/authorized_keys
+fi
+```
