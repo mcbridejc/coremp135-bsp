@@ -42,11 +42,7 @@ main()
 
 set -e
 
-RAUC_CERT_PATH=${BR2_EXTERNAL_COREMP135_PATH}/rauc_keys/cert.pem
-RAUC_KEY_PATH=${BR2_EXTERNAL_COREMP135_PATH}/rauc_keys/key.pem
-
-if [ -v RAUC_CERT_PATH && -v RAUC_KEY_PATH ]; then
-
+if [[ -v RAUC_CERT_PATH && -v RAUC_KEY_PATH ]]; then
 	mkdir -p ${BINARIES_DIR}/temp-update
 	rm -f ${BINARIES_DIR}/temp-update/rootfs.ext4
 	ln -L ${BINARIES_DIR}/rootfs.ext4 ${BINARIES_DIR}/temp-update/
