@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 fixup_extlinux_dtb_name()
 {
 	local DTB_NAME="$(sed -n 's/^BR2_LINUX_KERNEL_INTREE_DTS_NAME="\(.*\)"$/\1/p' ${BR2_CONFIG})"
@@ -43,7 +45,7 @@ if [ -e ${TARGET_DIR}/etc/fstab ]; then
 	# WARNING: data=journal is safest, but potentially slow!
 	if $(grep -qE 'LABEL=Data' ${TARGET_DIR}/etc/fstab); then
 		# replace line
-		sed -i "LABEL=Data c\LABEL=Data \/data ${FSTAB_OPTIONS}" output/target/etc/fstab
+		sed -i "/LABEL=Data /c\LABEL=Data /data ${FSTAB_OPTIONS}" output/target/etc/fstab
 	else
 		# add line
 		echo "LABEL=Data /data ${FSTAB_OPTIONS}" >> ${TARGET_DIR}/etc/fstab
