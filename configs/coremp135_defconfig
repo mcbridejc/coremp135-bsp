@@ -150,3 +150,7 @@ BR2_PACKAGE_IPTABLES=y
 # Network time
 BR2_PACKAGE_NTP=y
 BR2_PACKAGE_NTP_NTPD=y
+
+# Can utilities (e.g. candump)
+BR2_PACKAGE_CAN_UTILS=y
+
