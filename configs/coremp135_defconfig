@@ -153,3 +153,5 @@ BR2_PACKAGE_NTP_NTPD=y
 # Can utilities (e.g. candump)
 BR2_PACKAGE_CAN_UTILS=y
 
+# SQLITE3
+BR2_PACKAGE_SQLITE=y
