@@ -7,7 +7,7 @@ modprobe tun
 # Run modetest
 # This does something to initialize the DRM pipeline -- I have not figured out exactly what. But,
 # writing to /dev/fb1 has no effect until modetest has been run.
-modetest
+modetest -M stm -D /dev/fb1
 
 echo 1 4 1 7 > /proc/sys/kernel/printk
 tinyplay /usr/local/m5stack/HugoInitialized.wav &> /dev/null &
