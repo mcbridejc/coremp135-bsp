@@ -23,7 +23,7 @@ if [ -v RAUC_CERT_PATH ]; then
 		echo ${RAUC_CERT_PATH}
 		#exit 1
 	fi
-else 
+else
 	echo "RAUC_CERT_PATH not set, so no certificate is being installed to target filesystem"
 fi
 
@@ -36,19 +36,28 @@ if [ -v COREMP135_EXFAT_DATA ]; then
 	FSTAB_OPTIONS="exfat defaults,rw 0 0"
 else
 	mkfs.ext4 -L Data ${BINARIES_DIR}/data.img
+	# WARNING: data=journal is safest, but potentially slow!
 	FSTAB_OPTIONS="ext4 defaults,data=journal,noatime 0 0"
 fi
-	
+
+FSTAB="${TARGET_DIR}/etc/fstab"
 # Mount persistent data partition
-if [ -e ${TARGET_DIR}/etc/fstab ]; then
+if [ -e $FSTAB ]; then
 	# For configuration data
-	# WARNING: data=journal is safest, but potentially slow!
-	if $(grep -qE 'LABEL=Data' ${TARGET_DIR}/etc/fstab); then
+	if $(grep -qE 'LABEL=Data' $FSTAB); then
 		# replace line
-		sed -i "/LABEL=Data /c\LABEL=Data /data ${FSTAB_OPTIONS}" output/target/etc/fstab
+		sed -i "/LABEL=Data /c\LABEL=Data /data ${FSTAB_OPTIONS}" ${FSTAB}
 	else
 		# add line
-		echo "LABEL=Data /data ${FSTAB_OPTIONS}" >> ${TARGET_DIR}/etc/fstab
+		echo "LABEL=Data /data ${FSTAB_OPTIONS}" >> ${FSTAB}
+	fi
+
+	if $(grep -qE '/var/lib/tailscale' ${FSTAB}); then
+		# replace line
+		sed -i '\|/data/tailscale|c\/data/tailscale /var/lib/tailscale    none  bind  0  0' "$FSTAB"
+	else
+	    # add line
+		echo "/data/tailscale /var/lib/tailscale    none  bind  0  0" >> ${FSTAB}
 	fi
 fi
 

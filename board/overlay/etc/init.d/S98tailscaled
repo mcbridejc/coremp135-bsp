@@ -3,7 +3,8 @@
 # Start/stop tailscaled
 #
 
-DAEMON=/usr/sbin/tailscaled
+STATEDIR=/data/tailscaled
+DAEMON=/usr/bin/tailscaled
 PIDFILE=/var/run/tailscaled.pid
 
 case "$1" in
