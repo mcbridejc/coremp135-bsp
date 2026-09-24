@@ -54,10 +54,10 @@ if [ -e $FSTAB ]; then
 
 	if $(grep -qE '/var/lib/tailscale' ${FSTAB}); then
 		# replace line
-		sed -i '\|/data/tailscale|c\/data/tailscale /var/lib/tailscale    none  bind  0  0' "$FSTAB"
+		sed -i '\|/data/tailscale|c\/data/tailscale /var/lib/tailscale    none  bind,noauto  0  0' "$FSTAB"
 	else
 	    # add line
-		echo "/data/tailscale /var/lib/tailscale    none  bind  0  0" >> ${FSTAB}
+		echo "/data/tailscale /var/lib/tailscale    none  bind,noauto  0  0" >> ${FSTAB}
 	fi
 fi
 

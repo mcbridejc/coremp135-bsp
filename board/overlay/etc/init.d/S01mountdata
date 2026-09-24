@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# It seems sometimes the data partition label isn't available fast enough
+# during boot for mount-a to catch it. This reattempts.
+
+i=0
+while [ "$i" -lt 10 ]; do
+    if mount /data; then
+        exit 0
+    fi
+    i=$((i + 1))
+    sleep 1
+done
+
+echo "ERROR: could not mount /data" >&2
+exit 1
